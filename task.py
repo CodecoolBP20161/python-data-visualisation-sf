@@ -9,4 +9,7 @@ class Task(object):
 
     @property
     def rgb_color(self):
-        return ImageColor.getrgb(self.color_mix)
+        if self.color_mix is None:
+            return (0, 0, 0)
+        else:
+            return ImageColor.getrgb(self.color_mix)
