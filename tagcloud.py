@@ -1,4 +1,5 @@
 from client import Client
+from project import Project
 from PIL import Image, ImageDraw, ImageFont
 import random
 
@@ -16,36 +17,42 @@ class TagCloud():
     def drawing(self):
         for word in self.words:
             self.draw.text((word['position'][0], word['position'][1]), word['text'],
-                           font=ImageFont.truetype(self.font, word['fontsize']), fill=(0,0,0))
-
+                           font=ImageFont.truetype(self.font, word['font_size']), fill=(0, 0, 0))
 
     # Fill up words list with the necessary text properties
     def _word_list(self, object_list):
         for object in object_list:
-            self.words.append({'text': object.name, 'fontsize': self._fontsize(object.priority),
-                               'position': self._position()})
+            text = object.name
+            font_size = int(object.priority / 3) + 20
+            width, height = self.draw.textsize(text, font=ImageFont.truetype(self.font, font_size))
+            position = [random.randint(0, self.width - width), random.randint(0, self.height - height)]
+            while not self._overlap(position, width, height):
+                position = [random.randint(0, self.width - width), random.randint(0, self.height - height)]
+            self.words.append({'text': text, 'font_size': font_size, 'width': width, 'height': height,
+                               'position': position})
 
-    # get fontsize based on the priority of data
-    def _fontsize(self, weight):
-        return int(weight / 5)+20
-
-    # give the text a random position
-    def _position(self):
-        return [random.randint(0, self.width), random.randint(0, self.height)]
-
-
-    # def _get_size(self, text, font_type):
-    #     widt, height = self.draw.textsize(text, )
-
-
-    # def test(self):
-    #     clients = Client.gen_list()
-    #     self._word_list(clients)
-    #     print(self.words)
-    #     self.drawing()
-    #     self.image.show()
+    def _overlap(self, position, width, height):
+        if len(self.words) > 0:
+            for word in self.words:
+                x_ref = word['position'][0]
+                y_ref = word['position'][1]
+                if not ((x_ref + word['width'] < position[0] or position[0] < x_ref - width)
+                        or (y_ref + word['height'] < position[1] or position[1] < y_ref - height)):
+                    return False
+            return True
+        else:
+            return True
 
 
-# task = TagCloud()
-# task.test()
+
+    def test(self):
+        clients = Client.gen_list()
+        self._word_list(clients)
+        print(self.words)
+        self.drawing()
+        self.image.show()
+
+
+task = TagCloud()
+task.test()
 
