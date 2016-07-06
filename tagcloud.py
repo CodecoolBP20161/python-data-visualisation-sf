@@ -6,22 +6,26 @@ import random
 
 class TagCloud():
 
-    def __init__(self, width=600, height=600, background_color="#fff", font="arial_narrow_7.ttf"):
+    def __init__(self, object_list, width=600, height=600, background_color="#fff", font="arial_narrow_7.ttf"):
         self.width = width
         self.height = height
         self.image = Image.new('RGBA', [width, height], background_color)
         self.draw = ImageDraw.Draw(self.image)
         self.words = []
         self.font = font
+        self.object_list = object_list
 
     def drawing(self):
+        self._word_list()
         for word in self.words:
             self.draw.text((word['position'][0], word['position'][1]), word['text'],
                            font=ImageFont.truetype(self.font, word['font_size']), fill=(0, 0, 0))
+        self.image.save('TagCloud.jpg')
+        self.image.show()
 
     # Fill up words list with the necessary text properties
-    def _word_list(self, object_list):
-        for object in object_list:
+    def _word_list(self):
+        for object in self.object_list:
             text = object.name
             font_size = int(object.priority / 3) + 20
             width, height = self.draw.textsize(text, font=ImageFont.truetype(self.font, font_size))
@@ -42,17 +46,3 @@ class TagCloud():
             return True
         else:
             return True
-
-
-
-    def test(self):
-        clients = Client.gen_list()
-        self._word_list(clients)
-        print(self.words)
-        self.drawing()
-        self.image.show()
-
-
-task = TagCloud()
-task.test()
-
