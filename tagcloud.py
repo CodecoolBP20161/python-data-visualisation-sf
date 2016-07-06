@@ -3,11 +3,12 @@ from company_name import Company
 from project import Project
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import random
+import math
 
 
 class TagCloud():
 
-    def __init__(self, object_list, width=700, height=700, background_color="#fff", font="Hugs & Kisses xoxo Demo.ttf"):
+    def __init__(self, object_list, width=500, height=500, background_color="#fff", font="Hugs & Kisses xoxo Demo.ttf"):
         self.width = width
         self.height = height
         self.image = Image.new('RGBA', [width, height], background_color)
@@ -30,9 +31,15 @@ class TagCloud():
             color = object.rgb_color
             font_size = int(object.priority / 3)+10
             width, height = self.draw.textsize(text, font=ImageFont.truetype(self.font, font_size))
-            position = [random.randint(0, self.width - width), random.randint(0, self.height - height)]
+
+            position = [self.width/2, self.height/2]
+            t = 0.25
+            spiral_coord = (0.25 * (math.cos(t) + t * math.sin(t)), 0.25 * (math.sin(t) - t * math.cos(t)))
             while not self._overlap(position, width, height):
-                position = [random.randint(0, self.width - width), random.randint(0, self.height - height)]
+                position = [self.width/2 + spiral_coord[0], self.height/2 + spiral_coord[1]]
+                t += 0.25
+                spiral_coord = (0.25 * (math.cos(t) + t * math.sin(t)), 0.25 * (math.sin(t) - t * math.cos(t)))
+
             self.words.append({'text': text, 'font_size': font_size, 'width': width, 'height': height,
                                'position': position, 'fill': color})
 
@@ -44,13 +51,8 @@ class TagCloud():
                 if not ((x_ref + word['width'] < position[0] or position[0] < x_ref - width)
                         or (y_ref + word['height'] < position[1] or position[1] < y_ref - height)):
                     return False
+                if (position[0] + width > self.width or position[0] < 0) or (position[1] + height > self.height or position[1] < 0):
+                    return False
             return True
         else:
             return True
-
-
-
-#
-#
-# asd = TagCloud(Project.gen_list())
-# asd.drawing()
