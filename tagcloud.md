@@ -29,6 +29,9 @@ None
 * ```object_list```
    * data type: list
    * description: stores the object of a query
+* ```_check_window_occupation```
+   * data type: boolean
+   * description: check if the window occupation OK
 
 ## Class methods
 
@@ -41,9 +44,21 @@ None
 The constructor of the object.
 
 #### Arguments
-
-object_list, width=600, height=600, background_color="#fff", font="arial_narrow_7.ttf"
- (more spec later)
+* ```object_list```
+  * data type: list
+  * description: stores the objects from the query
+* ```width```
+  * data type: integer
+  * description: width of the window
+* ```height```
+   * data type: integer
+   * description: height of the window
+* ```background_color```
+   * data type: string
+   * description: stores the RGBA value of the background color
+* ```font```
+   * data type: string
+   * description: store the filename of the font
 #### Return value
 None
 
@@ -51,8 +66,9 @@ None
 Draw the tagcloud, + save and show it.
 
 #### Arguments
-
-None
+* ```file_name```
+   * data type: string
+   * description: store the filename to save
 #### Return value
 None
 
@@ -60,7 +76,9 @@ None
 Make a dictionary with the texts and its attributes from the objects of a query
 
 #### Arguments
-None
+* ```font_size_calculator```
+   * data type: int
+   * description: a vlaue for font_size calculations
 
 #### Return value
 None
@@ -69,7 +87,42 @@ None
 Check the overlap of texts
 
 #### Arguments
-position, width, height of the current text
+* ```width```
+  * data type: integer
+  * description: width of the text
+* ```height```
+   * data type: integer
+   * description: height of the text
+* ```position```
+   * data type: tuple
+   * description: stores the x, y coords of the text
+
+#### Return value
+None
+
+### ```_is_window_large```
+Check if the window is too large
+
+#### Arguments
+None
+
+#### Return value
+True or False
+
+### ```_check_tag_borders```
+Calculate the Tag Cloud borders
+
+#### Arguments
+None
+
+#### Return value
+tuple with the (x_max, x_min, y_max, y_min)
+
+### ```_crop_blank```
+Crop the blank background
+
+#### Arguments
+None
 
 #### Return value
 None
