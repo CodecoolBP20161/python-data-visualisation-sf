@@ -32,7 +32,7 @@ class Client(Task):
     # value.
     def mixer(self):
         x = [ImageColor.getrgb(i)
-             for i in self.color_mix if i != None or i != 'None']
+             for i in self.color_mix if i]
         length = len(self.color_mix)
         r = sum([i[0] for i in x]) // length
         g = sum([i[1] for i in x]) // length
