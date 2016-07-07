@@ -20,7 +20,7 @@ class Manager(Task):
                           AND manager != ''
                           ORDER BY manager;""")
         managers = cursor.fetchall()
-        managers = [[i[0], (today - i[1]).days, i[2], i[3], i[4]] for i in managers]
-        managers = [[i[0], i[1]/i[2], i[4]] for i in managers]
+        managers = [[i[0], (today - i[1]).days, i[2], i[3]] for i in managers]
+        managers = [[i[0], i[1]/i[2], i[3]] for i in managers]
         calculator = 100/max([i[1] for i in managers])
         return [Manager(i[0], i[1] * calculator, i[2]) for i in managers]
