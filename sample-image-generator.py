@@ -15,7 +15,7 @@ text_content_list = [i[0] for i in rows]
 text_content = text_content_list[0]
 text_size = draw.textsize(text_content)
 # draw.text((x, y),text_content,(r,g,b))
-draw.text((0, 0), text_content, **text_options)
+draw.text((50, 50), text_content, **text_options)
 draw.text((0, text_size[1]), text_content, **text_options)
 draw.text((text_size[0], 0), text_content, **text_options)
 draw.text(text_size, text_content, **text_options)
