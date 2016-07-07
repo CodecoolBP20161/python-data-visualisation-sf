@@ -29,9 +29,11 @@ def main_menu():
 
 
 def tag_menu(task):
-    background_color = {'black': '#000', 'white': '#fff', 'grey': '#d3d3d3', 'red': '#FF0000'}
+    background_color = {'black': '#000', 'white': '#fff',
+                        'grey': '#d3d3d3', 'red': '#FF0000'}
     print('1. aquawax\n2. arial\n3. DK\n4. keepcalm\n5. kenyan')
-    options = {'1': 'aquawax', '2': 'arial', '3': 'DK', '4': 'keepcalm', '5': 'kenyan'}
+    options = {'1': 'aquawax', '2': 'arial',
+               '3': 'DK', '4': 'keepcalm', '5': 'kenyan'}
     while True:
         try:
             inst = TagCloud(task, font=TagCloud.FONTS[options[input('Please select the type of font! ')]],
@@ -44,4 +46,3 @@ def tag_menu(task):
             print('1. aquawax\n2. arial\n3. DK\n4. keepcalm\n5. kenyan')
 
 main()
-

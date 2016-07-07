@@ -1,6 +1,7 @@
 from PIL import ImageColor
 import random
 
+
 class Task(object):
 
     def __init__(self, name, priority, color_mix):

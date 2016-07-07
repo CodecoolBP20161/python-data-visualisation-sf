@@ -8,6 +8,7 @@ import random
 import math
 import os
 
+
 class TagCloud():
 
     FONTS = {'aquawax': 'Aquawax Black Trial.ttf', 'arial': 'arial_narrow_7.ttf', 'DK': 'DK Cinnabar Brush.ttf',
@@ -24,7 +25,7 @@ class TagCloud():
         self.object_list = object_list
         self._check_window_occupation = False
 
-    #draw out and save the tagcloud
+    # draw out and save the tagcloud
     def drawing(self, file_name='tagcloud.png'):
         self._word_list()
         for word in self.words:
@@ -36,7 +37,6 @@ class TagCloud():
         self.image.paste(logo, (self.width - 50, 0))
         self.image.show()
         self.image.save(file_name)
-
 
     # Fill up words list with the necessary text properties
     def _word_list(self, font_size_calculator=5):
@@ -59,18 +59,21 @@ class TagCloud():
             else:
                 font_size = int(object.priority / (font_size_calculator * 2))
 
-
             # get width and height of the text
-            width, height = self.draw.textsize(text, font=ImageFont.truetype(self.font, font_size))
+            width, height = self.draw.textsize(
+                text, font=ImageFont.truetype(self.font, font_size))
 
             # give position for the text
-            position = [self.width/2 - width, self.height/2 - height]
+            position = [self.width / 2 - width, self.height / 2 - height]
             t = random.randint(1, 100)
-            spiral_coord = (0.25 * (math.cos(t) + t * math.sin(t)), 0.25 * (math.sin(t) - t * math.cos(t)))
+            spiral_coord = (0.25 * (math.cos(t) + t * math.sin(t)),
+                            0.25 * (math.sin(t) - t * math.cos(t)))
             while not self._overlap(position, width, height):
-                position = [self.width/2 - width + spiral_coord[0], self.height/2 - height + spiral_coord[1]]
+                position = [self.width / 2 - width + spiral_coord[0],
+                            self.height / 2 - height + spiral_coord[1]]
                 t += 0.5
-                spiral_coord = (0.25 * (math.cos(t) + t * math.sin(t)), 0.25 * (math.sin(t) - t * math.cos(t)))
+                spiral_coord = (0.25 * (math.cos(t) + t * math.sin(t)),
+                                0.25 * (math.sin(t) - t * math.cos(t)))
             self.words.append({'text': text, 'font_size': font_size, 'width': width, 'height': height,
                                'position': position, 'fill': color})
 
