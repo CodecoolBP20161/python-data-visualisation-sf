@@ -19,5 +19,3 @@ class Company(Task):
         calculator = 100 / max([i[2] for i in companies])
         return [Company(i[0], i[2] * calculator, i[1]) for i in companies]
 
-x = Company.gen_list()
-print(x[0].color_mix)
