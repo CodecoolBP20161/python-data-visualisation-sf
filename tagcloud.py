@@ -4,21 +4,20 @@ from project import Project
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import random
 import math
-
+import os
 
 class TagCloud():
 
     FONTS = {'aquawax': 'Aquawax Black Trial.ttf', 'arial': 'arial_narrow_7.ttf', 'DK': 'DK Cinnabar Brush.ttf',
              'keepcalm': 'KeepCalm-Medium.ttf', 'kenyan': 'kenyan coffee bd.ttf'}
-    FONT_PATH = '/home/cave/Documents/Python/tag_cloud/python-data-visualisation-sf/fonts'
-
-    def __init__(self, object_list, width=500, height=500, background_color="#fff", font="DK Cinnabar Brush.ttf"):
+    MAIN_PATH = os.path.dirname(os.path.abspath(__file__))
+    def __init__(self, object_list, width=600, height=600, background_color="#fff", font="DK Cinnabar Brush.ttf"):
         self.width = width
         self.height = height
         self.image = Image.new('RGBA', [width, height], background_color)
         self.draw = ImageDraw.Draw(self.image)
         self.words = []
-        self.font = TagCloud.FONT_PATH + "/" + font
+        self.font = TagCloud.MAIN_PATH + "/fonts/" + font
         self.object_list = object_list
 
     def drawing(self):
@@ -31,6 +30,8 @@ class TagCloud():
 
     # Fill up words list with the necessary text properties
     def _word_list(self):
+        # if self._check_window_font_size:
+
         for object in self.object_list:
             text = object.name
 
@@ -59,6 +60,7 @@ class TagCloud():
 
             self.words.append({'text': text, 'font_size': font_size, 'width': width, 'height': height,
                                'position': position, 'fill': color})
+            # self._word_list()
 
     def _overlap(self, position, width, height):
         if len(self.words) > 0:
@@ -74,6 +76,14 @@ class TagCloud():
             return True
         else:
             return True
+
+    # def _check_window_font_size(self):
+    #     sum_font_height = 0
+    #     sum_font_width = 0
+    #     for word in self.words:
+    #         sum_font_height += word['height']
+    #         sum_font_width += word['width']
+
 
 # inst = TagCloud(Project.gen_list(), font='arial_narrow_7.ttf')
 # inst.drawing()
