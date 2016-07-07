@@ -1,21 +1,26 @@
 import psycopg2
 
-dbname = 'code'#input('Please enter database name!')
-user = 'code'#input('Please enter username!')
-password = 'code'#input('Please enter password!')
 
-try:
-    # setup connection string
-    connect_str = "dbname=%s user=%s host='localhost' password=%s"%(dbname,user,password)
-    # use our connection values to establish a connection
-    conn = psycopg2.connect(connect_str)
-    # create a psycopg2 cursor that can execute queries
-    cursor = conn.cursor()
+class Database(object):
 
-    cursor.execute("""SELECT company_hq FROM project;""")
+    def __init__(self, dbname, user, password):
+        self.dbname = dbname
+        self.user = user
+        self.password = password
 
-    rows = cursor.fetchall()
-    #print(rows)
-except Exception as e:
-    print("PROBLEM!!!!")
-    print(e)
+    def connect(self):
+        connect_str = "dbname=%s user=%s host='localhost' password=%s" % (
+            self.dbname, self.user, self.password)
+        return psycopg2.connect(connect_str)
+
+    def execute(self, sql_command):
+        cursor = self.connect().cursor()
+        try:
+            cursor.execute("""%s""" % (sql_command))
+            rows = cursor.fetchall()
+            return rows
+        except Exception as e:
+            print("PROBLEM!!!!")
+            print(e)
+
+mydb = Database('code', 'code', 'code')
