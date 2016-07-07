@@ -1,6 +1,8 @@
 from client import Client
 from company_name import Company
 from project import Project
+from headquarter import Headquarter
+from manager import Manager
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import random
 import math
@@ -11,7 +13,7 @@ class TagCloud():
     FONTS = {'aquawax': 'Aquawax Black Trial.ttf', 'arial': 'arial_narrow_7.ttf', 'DK': 'DK Cinnabar Brush.ttf',
              'keepcalm': 'KeepCalm-Medium.ttf', 'kenyan': 'kenyan coffee bd.ttf'}
     MAIN_PATH = os.path.dirname(os.path.abspath(__file__))
-    def __init__(self, object_list, width=600, height=600, background_color="#fff", font="DK Cinnabar Brush.ttf"):
+    def __init__(self, object_list, width=1000, height=800, background_color="#fff", font="DK Cinnabar Brush.ttf"):
         self.width = width
         self.height = height
         self.image = Image.new('RGBA', [width, height], background_color)
@@ -30,7 +32,8 @@ class TagCloud():
         self.image.save('blabla.png')
 
     # Fill up words list with the necessary text properties
-    def _word_list(self, font_size_calculator=3):
+    def _word_list(self, font_size_calculator=5):
+
         for object in self.object_list:
             text = object.name
 
@@ -39,12 +42,12 @@ class TagCloud():
             except AttributeError:
                 color = object.rgb_color
 
-                if object.priority > 90:
-                    font_size = int(object.priority / font_size_calculator)
-                elif object.priority > 85:
-                    font_size = int(object.priority / (font_size_calculator * 2))
-                else:
-                    font_size = int(object.priority / (font_size_calculator * 3))
+            if object.priority > 90:
+                font_size = int(object.priority / font_size_calculator)
+            elif object.priority > 85:
+                font_size = int(object.priority / (font_size_calculator * 1.2))
+            else:
+                font_size = int(object.priority / (font_size_calculator * 2))
 
 
 
@@ -59,6 +62,8 @@ class TagCloud():
                 spiral_coord = (0.25 * (math.cos(t) + t * math.sin(t)), 0.25 * (math.sin(t) - t * math.cos(t)))
             self.words.append({'text': text, 'font_size': font_size, 'width': width, 'height': height,
                                'position': position, 'fill': color})
+
+        # check if the window is much larger than the tagcloud
         if self._is_window_large():
             if font_size_calculator > 1:
                 font_size_calculator -= 1
@@ -108,5 +113,5 @@ class TagCloud():
                 y_min = text_y_min
         return x_max, x_min, y_max, y_min
 
-inst = TagCloud(Project.gen_list(), font='arial_narrow_7.ttf')
+inst = TagCloud(Headquarter.gen_list(), font='arial_narrow_7.ttf')
 inst.drawing()
