@@ -12,17 +12,16 @@ class Client(Task):
     @classmethod
     def gen_list(cls):
         clients = []
-        cursor.execute(
+        companies = mydb.execute(
             "SELECT count(name), company_name from project GROUP BY company_name")
-        companies = cursor.fetchall()
         calculator = 100 / max([i[0] for i in companies])
         # Filling the colom_mix list and making the instances
         for company in companies:
             project_number = company[0]
-            cursor.execute(
+            colors = mydb.execute(
                 "SELECT main_color from project WHERE company_name = '" + company[1] + "'")
             color_mix = []
-            for color in cursor.fetchall():
+            for color in colors:
                 color_mix.append(color[0])
             clients.append(
                 cls(company[1], project_number * calculator, color_mix))
