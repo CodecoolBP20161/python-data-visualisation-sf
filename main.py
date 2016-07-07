@@ -29,29 +29,19 @@ def main_menu():
 
 
 def tag_menu(task):
-    while True:
-        try:
-            height = int(input('Please type the height of window! '))
-            break
-        except ValueError:
-            print('That was not a number, please try again!')
-    while True:
-        try:
-            width = int(input('Please type the width of window! '))
-            break
-        except ValueError:
-            print('That was not a number, please try again!')
+    background_color = {'black': '#000', 'white': '#fff', 'grey': '#d3d3d3', 'red': '#FF0000'}
     print('1. aquawax\n2. arial\n3. DK\n4. keepcalm\n5. kenyan')
     options = {'1': 'aquawax', '2': 'arial', '3': 'DK', '4': 'keepcalm', '5': 'kenyan'}
     while True:
         try:
-            inst = TagCloud(task, height=height, width=width, font=TagCloud.FONTS[options[input('Please select the type of font! ')]])
+            inst = TagCloud(task, font=TagCloud.FONTS[options[input('Please select the type of font! ')]],
+                            background_color=background_color
+                            [input("Choose background color from black, white, red and grey! ")])
             inst.drawing()
             break
         except KeyError:
             print('That was invalid option, please try again!')
             print('1. aquawax\n2. arial\n3. DK\n4. keepcalm\n5. kenyan')
-
 
 main()
 

@@ -16,7 +16,7 @@ class Manager(Task):
     def gen_list(cls):
         cursor.execute("""SELECT manager, duedate, cast(budget_value AS float), main_color FROM project
                           WHERE duedate BETWEEN '2000-01-01' AND now()
-                          AND budget_currency = 'EUR'
+                          AND budget_currency = 'USD'
                           AND manager != ''
                           ORDER BY manager;""")
         managers = cursor.fetchall()
