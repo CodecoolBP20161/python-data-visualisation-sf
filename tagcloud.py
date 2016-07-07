@@ -19,6 +19,7 @@ class TagCloud():
         self.words = []
         self.font = TagCloud.MAIN_PATH + "/fonts/" + font
         self.object_list = object_list
+        self._check_window_occupation = False
 
     def drawing(self):
         self._word_list()
@@ -29,9 +30,7 @@ class TagCloud():
         self.image.save('blabla.png')
 
     # Fill up words list with the necessary text properties
-    def _word_list(self):
-        # if self._check_window_font_size:
-
+    def _word_list(self, font_size_calculator=3):
         for object in self.object_list:
             text = object.name
 
@@ -40,27 +39,36 @@ class TagCloud():
             except AttributeError:
                 color = object.rgb_color
 
-            if object.priority > 90:
-                font_size = int(object.priority / 2) + 10
-            elif object.priority > 80:
-                font_size = int(object.priority / 5) + 10
-            else:
-                font_size = int(object.priority / 8) + 5
+                if object.priority > 90:
+                    font_size = int(object.priority / font_size_calculator)
+                elif object.priority > 85:
+                    font_size = int(object.priority / (font_size_calculator * 2))
+                else:
+                    font_size = int(object.priority / (font_size_calculator * 3))
+
 
 
             width, height = self.draw.textsize(text, font=ImageFont.truetype(self.font, font_size))
 
             position = [self.width/2 - width, self.height/2 - height]
-            t = 0.25
+            t = random.randint(1, 100)
             spiral_coord = (0.25 * (math.cos(t) + t * math.sin(t)), 0.25 * (math.sin(t) - t * math.cos(t)))
             while not self._overlap(position, width, height):
                 position = [self.width/2 - width + spiral_coord[0], self.height/2 - height + spiral_coord[1]]
                 t += 0.5
                 spiral_coord = (0.25 * (math.cos(t) + t * math.sin(t)), 0.25 * (math.sin(t) - t * math.cos(t)))
-
             self.words.append({'text': text, 'font_size': font_size, 'width': width, 'height': height,
                                'position': position, 'fill': color})
-            # self._word_list()
+        if self._is_window_large():
+            if font_size_calculator > 1:
+                font_size_calculator -= 1
+            else:
+                return 0
+            self.words = []
+            self._word_list(font_size_calculator)
+            if self._check_window_occupation:
+                return 0
+        self._check_window_occupation = True
 
     def _overlap(self, position, width, height):
         if len(self.words) > 0:
@@ -77,13 +85,28 @@ class TagCloud():
         else:
             return True
 
-    # def _check_window_font_size(self):
-    #     sum_font_height = 0
-    #     sum_font_width = 0
-    #     for word in self.words:
-    #         sum_font_height += word['height']
-    #         sum_font_width += word['width']
+    def _is_window_large(self):
+        x_max, x_min, y_max, y_min = self._check_tag_borders()
+        if x_max < self.width and x_min > 0 and y_max < self.height and y_min > 0:
+            return True
+        return False
 
+    def _check_tag_borders(self):
+        x_max, x_min, y_max, y_min = 0, self.width, 0, self.height
+        for word in self.words:
+            text_x_max = word['position'][0] + word['width']
+            text_x_min = word['position'][0]
+            text_y_min = word['position'][1]
+            text_y_max = word['position'][1] + word['height']
+            if text_x_max > x_max:
+                x_max = text_x_max
+            if text_y_max > y_max:
+                y_max = text_y_max
+            if text_x_min < x_min:
+                x_min = text_x_min
+            if text_y_min < y_min:
+                y_min = text_y_min
+        return x_max, x_min, y_max, y_min
 
-# inst = TagCloud(Project.gen_list(), font='arial_narrow_7.ttf')
-# inst.drawing()
+inst = TagCloud(Project.gen_list(), font='arial_narrow_7.ttf')
+inst.drawing()
