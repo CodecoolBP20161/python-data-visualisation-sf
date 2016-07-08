@@ -23,4 +23,5 @@ class Database(object):
             print("PROBLEM!!!!")
             print(e)
 
-mydb = Database('code', 'code', 'code')
+mydb = Database(input('What is your database name? '), input('What is your user name? '),
+                   input('What is your password? '))

@@ -4,7 +4,7 @@ from project import Project
 from company_name import Company
 from manager import Manager
 from headquarter import Headquarter
-
+from connection import Database
 
 def main():
     while True:
@@ -44,5 +44,7 @@ def tag_menu(task):
         except KeyError:
             print('That was invalid option, please try again!')
             print('1. aquawax\n2. arial\n3. DK\n4. keepcalm\n5. kenyan')
+
+
 
 main()
